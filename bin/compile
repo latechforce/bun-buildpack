@@ -25,7 +25,7 @@ if [ ! -f bun.zip ]; then
     exit 1
 fi
 unzip bun.zip -d $BUN_DIR
-chmod +x $BUN_DIR/bun
+chmod +x $BUN_DIR/bun-${BUN_DISTRO}/bun
 
 # Add Bun to the PATH
 export PATH="$BUN_DIR:$PATH"
