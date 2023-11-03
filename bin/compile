@@ -20,10 +20,12 @@ BUN_DISTRO="linux-x64"
 BUN_URL="https://github.com/oven-sh/bun/releases/download/bun-v${BUN_VERSION}/bun-${BUN_DISTRO}.zip"
 
 curl -fsSL $BUN_URL -o bun.zip
+
 if [ ! -f bun.zip ]; then
     echo "Failed to download Bun. Please check the provided URL."
     exit 1
 fi
+
 unzip -qo bun.zip -d $BUN_DIR
 chmod +x $BUN_DIR/bun-${BUN_DISTRO}/bun
 
@@ -34,8 +36,9 @@ echo "-----> Bun installed"
 echo "       Bun version: $(bun --version)"
 
 echo "-----> Building application with Bun"
+
 cd $BUILD_DIR
-bun install --production
+bun install
 bun run build
 
 # Clean up the cache to prevent storing unnecessary files
