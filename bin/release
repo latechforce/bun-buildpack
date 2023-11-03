@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# No release information for Bun applications yet, this is just a placeholder
+cat <<EOF
+---
+addons: []
+EOF

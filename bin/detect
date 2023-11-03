@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# This script checks if the app being pushed is a Bun app by looking for a `bun.lockb` file.
+
+if [ -f $1/bun.lockb ]; then
+  echo "Bun app detected"
+  exit 0
+else
+  exit 1
+fi

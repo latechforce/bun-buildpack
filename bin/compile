@@ -1,0 +1,40 @@
+#!/bin/sh
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+echo "-----> Installing Bun"
+
+# Choose a directory to store the bun binary
+BUN_DIR="$BUILD_DIR/.scalingo/bun"
+
+# Make sure the directory exists
+mkdir -p $BUN_DIR
+
+# Here we would download and install the Bun binary
+# For example, we could fetch a precompiled binary from the official source
+
+BUN_VERSION="latest"
+BUN_DISTRO="linux-x64"
+
+BUN_URL="https://github.com/oven-sh/bun/releases/download/${BUN_VERSION}/bun-${BUN_DISTRO}.zip"
+
+curl -L $BUN_URL -o bun.zip
+unzip bun.zip -d $BUN_DIR
+chmod +x $BUN_DIR/bun
+
+# Add Bun to the PATH
+export PATH="$BUN_DIR:$PATH"
+
+echo "-----> Building application with Bun"
+cd $BUILD_DIR
+bun install
+bun run build
+
+# Clean up the cache to prevent storing unnecessary files
+rm -rf $CACHE_DIR/*
+
+# Copy bun into the cache directory for future builds
+cp -R $BUN_DIR $CACHE_DIR
+
+echo "-----> Application built with Bun"
