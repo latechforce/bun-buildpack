@@ -32,6 +32,10 @@ chmod +x $BUN_DIR/bun-${BUN_DISTRO}/bun
 # Add Bun to the PATH
 export PATH="$BUN_DIR/bun-${BUN_DISTRO}:$PATH"
 
+# Export Bunx
+alias bunx='bun x'
+export -f bunx
+
 echo "-----> Bun installed"
 echo "       Bun version: $(bun --version)"
 
