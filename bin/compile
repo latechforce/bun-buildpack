@@ -40,8 +40,6 @@ BUNX_PATH="$(dirname "$0")/../scripts/bunx"
 cp $BUNX_PATH $BUILD_DIR/.bin/bunx
 chmod +x $BUILD_DIR/.bin/bunx
 
-bunx cowsay "hello"
-
 # Add Bun to the PATH for subsequent build steps
 export PATH="$BUN_DIR/${BUN_BINARY}:$PATH"
 export PATH="$BUILD_DIR/.bin:$PATH"
