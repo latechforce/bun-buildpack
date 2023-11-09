@@ -69,13 +69,7 @@ bun install
 #bun run build
 
 # Use which to find the path to the supabase executable
-SUPABASE_PATH=$(which supabase)
-
-if [ -n "$SUPABASE_PATH" ]; then
-    echo "Supabase is installed at: $SUPABASE_PATH"
-else
-    echo "Supabase is not installed or not found in PATH."
-fi
+bunx supabase link --project-ref $SUPABASE_PROJECT_ID
 
 # Clean up the cache to prevent storing unnecessary files
 rm -rf $CACHE_DIR/*
