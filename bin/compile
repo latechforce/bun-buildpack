@@ -41,13 +41,17 @@ BUNX_PATH="$(dirname "$0")/../scripts/bunx"
 cp $BUNX_PATH $BUILD_DIR/.bin/bunx
 chmod +x $BUILD_DIR/.bin/bunx
 
+# Add Bun to the PATH
+export PATH="$PATH:$BUN_DIR/${BUN_BINARY}"
+export PATH="$PATH:$BUILD_DIR/.bin"
+
 # Persist the PATH change for the runtime environment
-test ! -d ".profile.d" && mkdir -p .profile.d || true
-echo "export PATH=\"\$PATH:$BUN_DIR/${BUN_BINARY}\"" > .profile.d/bun.sh
-echo "export PATH=\"\$PATH:$BUILD_DIR/.bin\"" >> .profile.d/bun.sh
+#test ! -d ".profile.d" && mkdir -p .profile.d || true
+#echo "export PATH=\"\$PATH:$BUN_DIR/${BUN_BINARY}\"" > .profile.d/bun.sh
+#echo "export PATH=\"\$PATH:$BUILD_DIR/.bin\"" >> .profile.d/bun.sh
 
 # Load the profile script
-source ".profile.d/bun.sh"
+#source ".profile.d/bun.sh"
 
 echo "-----> Bun installed"
 echo "       Bun version: $(bun --version)"
