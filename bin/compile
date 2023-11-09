@@ -38,6 +38,7 @@ rm bun.zip
 export PATH="$BUN_DIR/${BUN_BINARY}:$PATH"
 
 # Add bunx alias
+shopt -s expand_aliases
 alias bunx='bun x'
 bunx cowsay "Hello world!"
 
