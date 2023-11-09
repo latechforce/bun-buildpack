@@ -36,6 +36,7 @@ rm bun.zip
 
 # Add Bun to the PATH for subsequent build steps
 export PATH="$BUN_DIR/${BUN_BINARY}:$PATH"
+alias bunx="bun x"
 
 echo "-----> Bun installed"
 echo "       Bun version: $(bun --version)"
@@ -55,6 +56,7 @@ cp -R $BUN_DIR $CACHE_DIR
 
 # Persist the PATH change for the runtime environment
 echo "export PATH=\"\$PATH:$BUN_DIR/${BUN_BINARY}\"" > $BUILD_DIR/.profile.d/bun.sh
+echo "alias bunx=\"bun x\"" > $BUILD_DIR/.profile.d/bun.sh
 
 # Make the profile script executable
 chmod +x $BUILD_DIR/.profile.d/bun.sh
