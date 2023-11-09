@@ -47,7 +47,7 @@ export PATH="$PATH:$BUILD_DIR/.bin"
 
 # Persist the PATH change for the runtime environment
 test ! -d ".profile.d" && mkdir -p .profile.d || true
-echo "export PATH=\"\$HOME/.scalingo/bun/bun-linux-x64:\$PATH\"" > .profile.d/bun.sh
+echo "export PATH=\"\$HOME/$BUN_DIR_NAME/${BUN_BINARY}:\$PATH\"" > .profile.d/bun.sh
 echo "export PATH=\"\$HOME/.bin:\$PATH\"" >> .profile.d/bun.sh
 
 echo "-----> Bun installed"
