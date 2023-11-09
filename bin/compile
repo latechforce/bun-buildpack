@@ -68,14 +68,7 @@ cd $BUILD_DIR
 bun install
 bun run build
 
-# At this point, your node_modules/.bin directory should be populated.
-# Verify that the executables are present.
-if [ -d "$NODE_BIN_PATH" ]; then
-    echo "-----> Executables in node_modules/.bin are now available"
-    ls -l "$NODE_BIN_PATH"
-else
-    echo "-----> Warning: node_modules/.bin directory not found"
-fi
+which supabase
 
 # Clean up the cache to prevent storing unnecessary files
 rm -rf $CACHE_DIR/*
