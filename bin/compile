@@ -37,18 +37,13 @@ rm bun.zip
 # Add Bun to the PATH for subsequent build steps
 export PATH="$BUN_DIR/${BUN_BINARY}:$PATH"
 
-# Create a bunx script to run bunx command
-echo '#!/bin/sh' > "$BUN_DIR/bunx"
-echo 'exec bun x "$@"' >> "$BUN_DIR/bunx"
-chmod +x "$BUN_DIR/bunx"
+# Add bunx alias
+shopt -s expand_aliases
+alias bunx='bun x'
 
 # Persist the PATH change for the runtime environment
 mkdir -p $BUILD_DIR/.profile.d
 echo "export PATH=\"\$PATH:$BUN_DIR/${BUN_BINARY}\"" > $BUILD_DIR/.profile.d/bun.sh
-
-ls $BUN_DIR/${BUN_BINARY}
-
-cat $BUILD_DIR/.profile.d/bun.sh
 
 echo "-----> Bun installed"
 echo "       Bun version: $(bun --version)"
