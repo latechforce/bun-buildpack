@@ -50,6 +50,9 @@ test ! -d ".profile.d" && mkdir -p .profile.d || true
 echo "export PATH=\"\$HOME/$BUN_DIR_NAME/${BUN_BINARY}:\$PATH\"" > .profile.d/bun.sh
 echo "export PATH=\"\$HOME/.bin:\$PATH\"" >> .profile.d/bun.sh
 
+# Make the profile script executable
+chmod +x .profile.d/bun.sh
+
 echo "-----> Bun installed"
 echo "       Bun version: $(bun --version)"
 
@@ -65,8 +68,5 @@ rm -rf $CACHE_DIR/*
 
 # Copy bun into the cache directory for future builds
 cp -R $BUN_DIR $CACHE_DIR
-
-# Make the profile script executable
-chmod +x $BUILD_DIR/.profile.d/bun.sh
 
 echo "-----> Application built with Bun"
