@@ -50,6 +50,11 @@ test ! -d ".profile.d" && mkdir -p .profile.d || true
 echo "export PATH=\"\$HOME/$BUN_DIR_NAME/${BUN_BINARY}:\$PATH\"" > .profile.d/bun.sh
 echo "export PATH=\"\$HOME/.bin:\$PATH\"" >> .profile.d/bun.sh
 
+# Add the node_modules/.bin directory to the PATH for both build and runtime environments
+NODE_BIN_PATH="$BUILD_DIR/node_modules/.bin"
+export PATH="$PATH:$NODE_BIN_PATH"
+echo "export PATH=\"\$HOME/node_modules/.bin:\$PATH\"" >> .profile.d/bun.sh
+
 # Make the profile script executable
 chmod +x .profile.d/bun.sh
 
@@ -62,6 +67,15 @@ echo "-----> Building application with Bun"
 cd $BUILD_DIR
 bun install
 bun run build
+
+# At this point, your node_modules/.bin directory should be populated.
+# Verify that the executables are present.
+if [ -d "$NODE_BIN_PATH" ]; then
+    echo "-----> Executables in node_modules/.bin are now available"
+    ls -l "$NODE_BIN_PATH"
+else
+    echo "-----> Warning: node_modules/.bin directory not found"
+fi
 
 # Clean up the cache to prevent storing unnecessary files
 rm -rf $CACHE_DIR/*
