@@ -41,6 +41,8 @@ export PATH="$BUN_DIR/${BUN_BINARY}:$PATH"
 shopt -s expand_aliases
 alias bunx='bun x'
 
+alias bunx
+
 # Persist the PATH change for the runtime environment
 mkdir -p $BUILD_DIR/.profile.d
 echo "export PATH=\"\$PATH:$BUN_DIR/${BUN_BINARY}\"" > $BUILD_DIR/.profile.d/bun.sh
