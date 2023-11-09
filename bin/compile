@@ -11,30 +11,36 @@ BUN_DIR="$BUILD_DIR/.scalingo/bun"
 # Make sure the directory exists
 mkdir -p $BUN_DIR
 
-# Here we would download and install the Bun binary
-# For example, we could fetch a precompiled binary from the official source
-
+# Define the version and distribution of Bun to download
 BUN_VERSION="1.0.8"
 BUN_DISTRO="linux-x64"
+BUN_BINARY="bun-${BUN_DISTRO}"
 
-BUN_URL="https://github.com/oven-sh/bun/releases/download/bun-v${BUN_VERSION}/bun-${BUN_DISTRO}.zip"
+BUN_URL="https://github.com/oven-sh/bun/releases/download/bun-v${BUN_VERSION}/${BUN_BINARY}.zip"
 
+# Download Bun
 curl -fsSL $BUN_URL -o bun.zip
 
+# If the download failed, exit with an error
 if [ ! -f bun.zip ]; then
     echo "Failed to download Bun. Please check the provided URL."
     exit 1
 fi
 
+# Unzip Bun and make it executable
 unzip -qo bun.zip -d $BUN_DIR
-chmod +x $BUN_DIR/bun-${BUN_DISTRO}/bun
+chmod +x $BUN_DIR/${BUN_BINARY}/bun
 
-# Add Bun to the PATH
-export PATH="$BUN_DIR/bun-${BUN_DISTRO}:$PATH"
+# Cleanup the zip file
+rm bun.zip
+
+# Add Bun to the PATH for subsequent build steps
+export PATH="$BUN_DIR/${BUN_BINARY}:$PATH"
 
 echo "-----> Bun installed"
 echo "       Bun version: $(bun --version)"
 
+# Here you would use bun to build your application
 echo "-----> Building application with Bun"
 
 cd $BUILD_DIR
@@ -46,5 +52,11 @@ rm -rf $CACHE_DIR/*
 
 # Copy bun into the cache directory for future builds
 cp -R $BUN_DIR $CACHE_DIR
+
+# Persist the PATH change for the runtime environment
+echo "export PATH=\"\$PATH:$BUN_DIR/${BUN_BINARY}\"" > $BUILD_DIR/.profile.d/bun.sh
+
+# Make the profile script executable
+chmod +x $BUILD_DIR/.profile.d/bun.sh
 
 echo "-----> Application built with Bun"
