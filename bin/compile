@@ -29,6 +29,7 @@ fi
 
 # Unzip Bun and make it executable
 unzip -qo bun.zip -d $BUN_DIR
+cp /buildpack/scripts/bunx $BUILD_DIR/$BUN_BINARY
 chmod +x $BUN_DIR/${BUN_BINARY}/bun
 
 # Cleanup the zip file
@@ -36,12 +37,10 @@ rm bun.zip
 
 # Add Bun to the PATH for subsequent build steps
 export PATH="$BUN_DIR/${BUN_BINARY}:$PATH"
-alias bunx="bun x"
 
 # Persist the PATH change for the runtime environment
 mkdir -p $BUILD_DIR/.profile.d
 echo "export PATH=\"\$PATH:$BUN_DIR/${BUN_BINARY}\"" > $BUILD_DIR/.profile.d/bun.sh
-echo "alias bunx=\"bun x\"" > $BUILD_DIR/.profile.d/bun.sh
 
 echo "-----> Bun installed"
 echo "       Bun version: $(bun --version)"

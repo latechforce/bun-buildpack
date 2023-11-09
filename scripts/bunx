@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# The command you want to forward arguments to
+COMMAND="bun x"
+
+# Forward all the script's parameters to the specified command
+"$COMMAND" "$@"
