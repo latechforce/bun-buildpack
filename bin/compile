@@ -68,8 +68,10 @@ cd $BUILD_DIR
 bun install
 #bun run build
 
+bun pm bin supabase
+
 # Use which to find the path to the supabase executable
-bunx supabase link --project-ref $SUPABASE_PROJECT_ID
+bunx supabase
 
 # Clean up the cache to prevent storing unnecessary files
 rm -rf $CACHE_DIR/*
