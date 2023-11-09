@@ -43,7 +43,9 @@ echo "export PATH=\"\$PATH:$BUN_DIR/${BUN_BINARY}\"" > $BUILD_DIR/.profile.d/bun
 echo 'alias bunx="bun x"' >> $BUILD_DIR/.profile.d/bun.sh
 echo 'source $BUILD_DIR/.profile.d/bun.sh' >> $BUILD_DIR/.profile
 
-ls -la $BUN_DIR/${BUN_BINARY}
+ls $BUN_DIR/${BUN_BINARY}
+
+cat $BUILD_DIR/.profile.d/bun.sh
 
 echo "-----> Bun installed"
 echo "       Bun version: $(bun --version)"
