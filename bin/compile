@@ -68,8 +68,6 @@ cd $BUILD_DIR
 bun install
 bun run build
 
-bun pm bin supabase
-
 # Clean up the cache to prevent storing unnecessary files
 rm -rf $CACHE_DIR/*
 
