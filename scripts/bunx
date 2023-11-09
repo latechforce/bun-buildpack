@@ -1,3 +1,6 @@
 #!/bin/bash
 
+echo "Debug: bunx wrapper called"
+echo "PATH is $PATH"
+
 bun x "$@"

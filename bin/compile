@@ -35,6 +35,9 @@ chmod +x $BUN_DIR/${BUN_BINARY}/bun
 # Cleanup the zip file
 rm bun.zip
 
+# Install the bunx wrapper script
+chmod +x $BUILDPACK_DIR/scripts/bunx
+
 # Add Bun to the PATH for subsequent build steps
 export PATH="$BUN_DIR/${BUN_BINARY}:$PATH"
 export PATH="$BUILDPACK_DIR/scripts:$PATH"
