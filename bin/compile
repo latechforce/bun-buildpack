@@ -46,8 +46,10 @@ export PATH="$BUILD_DIR/.bin:$PATH"
 
 # Persist the PATH change for the runtime environment
 test ! -d ".profile.d" && mkdir -p .profile.d || true
-echo "export PATH=\"\$PATH:$BUN_DIR/${BUN_BINARY}\"" > $BUILD_DIR/.profile.d/bun.sh
-echo "export PATH=\"\$PATH:$BUILD_DIR/.bin\"" >> $BUILD_DIR/.profile.d/bun.sh
+echo "export PATH=\"\$PATH:$BUN_DIR/${BUN_BINARY}\"" > .profile.d/bun.sh
+echo "export PATH=\"\$PATH:$BUILD_DIR/.bin\"" >> .profile.d/bun.sh
+
+cat .profile.d/bun.sh
 
 echo "-----> Bun installed"
 echo "       Bun version: $(bun --version)"
