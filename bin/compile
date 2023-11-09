@@ -45,9 +45,10 @@ chmod +x $BUILD_DIR/.bin/bunx
 test ! -d ".profile.d" && mkdir -p .profile.d || true
 echo "export PATH=\"\$PATH:$BUN_DIR/${BUN_BINARY}\"" > .profile.d/bun.sh
 echo "export PATH=\"\$PATH:$BUILD_DIR/.bin\"" >> .profile.d/bun.sh
+echo "export PATH=\"$HOME/.scalingo/bun/bun-linux-x64:$PATH\"" >> .profile.d/bun.sh
 
 # Make the profile script executable
-chmod +x $BUILD_DIR/.profile.d/bun.sh
+chmod +x .profile.d/bun.sh
 
 # Load the profile script
 source ".profile.d/bun.sh"
