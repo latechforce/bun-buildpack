@@ -2,7 +2,6 @@
 
 BUILD_DIR=$1
 CACHE_DIR=$2
-BUILDPACK_DIR=$(pwd)
 
 echo "-----> Installing Bun"
 
@@ -36,16 +35,21 @@ chmod +x $BUN_DIR/${BUN_BINARY}/bun
 rm bun.zip
 
 # Install the bunx wrapper script
-chmod +x $BUILDPACK_DIR/scripts/bunx
+mkdir -p $BUILD_DIR/.bin
+BUNX_PATH="$(dirname "$0")/../scripts/bunx"
+cp $BUNX_PATH $BUILD_DIR/.bin/bunx
+chmod +x $BUILD_DIR/.bin/bunx
+
+bunx cowsay "hello"
 
 # Add Bun to the PATH for subsequent build steps
 export PATH="$BUN_DIR/${BUN_BINARY}:$PATH"
-export PATH="$BUILDPACK_DIR/scripts:$PATH"
+export PATH="$BUILD_DIR/.bin:$PATH"
 
 # Persist the PATH change for the runtime environment
-mkdir -p $BUILD_DIR/.profile.d
+test ! -d ".profile.d" && mkdir -p .profile.d || true
 echo "export PATH=\"\$PATH:$BUN_DIR/${BUN_BINARY}\"" > $BUILD_DIR/.profile.d/bun.sh
-echo "export PATH=\"\$PATH:$BUILDPACK_DIR/scripts\"" >> $BUILD_DIR/.profile.d/bun.sh
+echo "export PATH=\"\$PATH:$BUILD_DIR/.bin\"" >> $BUILD_DIR/.profile.d/bun.sh
 
 echo "-----> Bun installed"
 echo "       Bun version: $(bun --version)"
