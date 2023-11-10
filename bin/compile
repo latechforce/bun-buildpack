@@ -18,7 +18,7 @@ NPM_VERSION=$(cat $BUILD_DIR/package.json | json_value 'npm' 1 | xargs)
 
 # Set a default Bun version if not specified
 if [ -z "$BUN_VERSION" ]; then
-    BUN_VERSION="1.0.11"  # Default to a stable LTS version, adjust as needed
+    BUN_VERSION="1.0.11"  # Default to the latest version, adjust as needed
     echo "-----> Bun version not specified. Defaulting Bun to v$NODE_VERSION"
 fi
 
