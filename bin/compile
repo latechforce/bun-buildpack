@@ -24,7 +24,7 @@ fi
 
 # Set a default Node.js version if npm is specified but not Node.js
 if [ -z "$NODE_VERSION" ] && [ ! -z "$NPM_VERSION" ]; then
-    NODE_VERSION="20"  # Default to a stable LTS version, adjust as needed
+    NODE_VERSION="20.9.0"  # Default to a stable LTS version, adjust as needed
     echo "-----> NPM specified without Node.js version. Defaulting Node.js to v$NODE_VERSION"
 fi
 
