@@ -103,7 +103,7 @@ if [ ! -z "$NODE_VERSION" ]; then
     export PATH="$BUILD_DIR/$NODE_DIR_NAME/bin:$PATH"
 
     # Persist the PATH change for the runtime environment
-    echo "export PATH=\"\$HOME/$NODE_DIR_NAME/bin:\$PATH\"" >> .profile.d/node.sh
+    echo "export PATH=\"\$HOME/$NODE_DIR_NAME/bin:\$PATH\"" > .profile.d/node.sh
 
     # Make the profile script executable
     chmod +x .profile.d/node.sh
