@@ -3,6 +3,13 @@
 BUILD_DIR=$1
 CACHE_DIR=$2
 
+# Function to parse JSON values
+json_value() {
+  KEY=$1
+  num=$2
+  awk -F"[,:}]" '{for(i=1;i<=NF;i++){if($i~/'$KEY'\042/){print $(i+1)}}}' | tr -d '"' | sed -n ${num}p
+}
+
 echo "-----> Installing Bun"
 
 # Choose a directory to store the bun binary
@@ -13,11 +20,21 @@ BUN_DIR="$BUILD_DIR/$BUN_DIR_NAME"
 mkdir -p $BUN_DIR
 
 # Define the version and distribution of Bun to download
-BUN_VERSION="1.0.8"
+BUN_VERSION=$(cat $BUILD_DIR/package.json | json_value 'bun' 1)
+if [ -z "$BUN_VERSION" ]; then
+  BUN_VERSION="latest"
+fi
 BUN_DISTRO="linux-x64"
 BUN_BINARY="bun-${BUN_DISTRO}"
 
-BUN_URL="https://github.com/oven-sh/bun/releases/download/bun-v${BUN_VERSION}/${BUN_BINARY}.zip"
+# Download and install Bun
+if [ "$BUN_VERSION" == "latest" ]; then
+  echo "-----> Installing the latest stable Bun"
+  BUN_URL=$(curl -s https://api.github.com/repos/oven-sh/bun/releases/latest | grep 'browser_download_url.*bun-linux-x64.zip' | cut -d '"' -f 4)
+else
+  echo "-----> Installing Bun v$BUN_VERSION"
+  BUN_URL="https://github.com/oven-sh/bun/releases/download/bun-v$BUN_VERSION/${BUN_BINARY}.zip"
+fi
 
 # Download Bun
 curl -fsSL $BUN_URL -o bun.zip
@@ -61,15 +78,57 @@ chmod +x .profile.d/bun.sh
 echo "-----> Bun installed"
 echo "       Bun version: $(bun --version)"
 
+# Install Node.js if specified
+echo "-----> Checking Node.js dependency"
+
+NODE_VERSION=$(cat $BUILD_DIR/package.json | json_value 'node' 1)
+
+if [ ! -z "$NODE_VERSION" ]; then
+    echo "-----> Installing Node.js v$NODE_VERSION"
+
+    # Choose a directory to store the node binary
+    NODE_DIR_NAME=".scalingo/node"
+    NODE_DIR="$BUILD_DIR/$NODE_DIR_NAME"
+    NODE_URL="https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz"
+
+    # Make sure the directory exists
+    mkdir -p $NODE_DIR
+
+    # Download and install Node.js
+    curl -s $NODE_URL | tar xz -C $BUILD_DIR/.scalingo/node --strip-components=1
+
+    # Add Node to the PATH
+    export PATH="$BUILD_DIR/.scalingo/node/bin:$PATH"
+
+    echo "-----> Node.js installed"
+    echo "       Node.js version: $(node --version)"
+else
+  echo "-----> Node.js version not specified in package.json, skipping"
+fi
+
+# Install NPM if specified
+echo "-----> Checking NPM dependency"
+
+NPM_VERSION=$(cat $BUILD_DIR/package.json | json_value 'npm' 1)
+
+# Install NPM if specified
+if [ ! -z "$NPM_VERSION" ]; then
+  echo "-----> Installing NPM v$NPM_VERSION"
+
+  npm install -g npm@$NPM_VERSION
+
+  echo "-----> NPM installed"
+  echo "       NPM version: $(npm --version)"
+else
+  echo "-----> NPM version not specified in package.json, skipping"
+fi
+
 # Here you would use bun to build your application
 echo "-----> Building application with Bun"
 
 cd $BUILD_DIR
 bun install
 bun run build
-
-echo "Turbo"
-bunx turbo run build
 
 echo "Linking to Supabase Project: $SUPABASE_PROJECT_ID"
 bunx supabase link --project-ref $SUPABASE_PROJECT_ID
