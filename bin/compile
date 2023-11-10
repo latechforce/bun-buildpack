@@ -20,7 +20,7 @@ BUN_DIR="$BUILD_DIR/$BUN_DIR_NAME"
 mkdir -p $BUN_DIR
 
 # Define the version and distribution of Bun to download
-BUN_VERSION=$(cat $BUILD_DIR/package.json | json_value 'bun' 1)
+BUN_VERSION=$(cat $BUILD_DIR/package.json | json_value 'bun' 1 | xargs)
 if [ -z "$BUN_VERSION" ]; then
   BUN_VERSION="latest"
 fi
@@ -81,7 +81,7 @@ echo "       Bun version: $(bun --version)"
 # Install Node.js if specified
 echo "-----> Checking Node.js dependency"
 
-NODE_VERSION=$(cat $BUILD_DIR/package.json | json_value 'node' 1)
+NODE_VERSION=$(cat $BUILD_DIR/package.json | json_value 'node' 1 | xargs)
 
 if [ ! -z "$NODE_VERSION" ]; then
     echo "-----> Installing Node.js v$NODE_VERSION"
@@ -109,7 +109,7 @@ fi
 # Install NPM if specified
 echo "-----> Checking NPM dependency"
 
-NPM_VERSION=$(cat $BUILD_DIR/package.json | json_value 'npm' 1)
+NPM_VERSION=$(cat $BUILD_DIR/package.json | json_value 'npm' 1 | xargs)
 
 # Install NPM if specified
 if [ ! -z "$NPM_VERSION" ]; then
