@@ -3,6 +3,8 @@
 BUILD_DIR=$1
 CACHE_DIR=$2
 
+echo "-----> Checking package.json for Bun, Node.js and NPM versions"
+
 # Function to parse JSON values
 json_value() {
   KEY=$1
@@ -10,7 +12,27 @@ json_value() {
   awk -F"[,:}]" '{for(i=1;i<=NF;i++){if($i~/'$KEY'\042/){print $(i+1)}}}' | tr -d '"' | sed -n ${num}p
 }
 
-echo "-----> Installing Bun"
+NODE_VERSION=$(cat $BUILD_DIR/package.json | json_value 'node' 1 | xargs)
+BUN_VERSION=$(cat $BUILD_DIR/package.json | json_value 'bun' 1 | xargs)
+NPM_VERSION=$(cat $BUILD_DIR/package.json | json_value 'npm' 1 | xargs)
+
+# Set a default Bun version if not specified
+if [ -z "$BUN_VERSION" ]; then
+  BUN_VERSION="latest"
+fi
+
+# Set a default Node.js version if npm is specified but not Node.js
+if [ -z "$NODE_VERSION" ] && [ ! -z "$NPM_VERSION" ]; then
+  NODE_VERSION="20"  # Default to a stable LTS version, adjust as needed
+  echo "-----> NPM specified without Node.js version. Defaulting Node.js to v$NODE_VERSION"
+fi
+
+# Install Bun
+if [ "$BUN_VERSION" == "latest" ]; then
+  echo "-----> Installing the latest stable Bun"
+else
+  echo "-----> Installing Bun v$BUN_VERSION"
+fi
 
 # Choose a directory to store the bun binary
 BUN_DIR_NAME=".scalingo/bun"
@@ -20,19 +42,13 @@ BUN_DIR="$BUILD_DIR/$BUN_DIR_NAME"
 mkdir -p $BUN_DIR
 
 # Define the version and distribution of Bun to download
-BUN_VERSION=$(cat $BUILD_DIR/package.json | json_value 'bun' 1 | xargs)
-if [ -z "$BUN_VERSION" ]; then
-  BUN_VERSION="latest"
-fi
 BUN_DISTRO="linux-x64"
 BUN_BINARY="bun-${BUN_DISTRO}"
 
 # Download and install Bun
 if [ "$BUN_VERSION" == "latest" ]; then
-  echo "-----> Installing the latest stable Bun"
   BUN_URL=$(curl -s https://api.github.com/repos/oven-sh/bun/releases/latest | grep 'browser_download_url.*bun-linux-x64.zip' | cut -d '"' -f 4)
 else
-  echo "-----> Installing Bun v$BUN_VERSION"
   BUN_URL="https://github.com/oven-sh/bun/releases/download/bun-v$BUN_VERSION/${BUN_BINARY}.zip"
 fi
 
@@ -79,10 +95,6 @@ echo "-----> Bun installed"
 echo "       Bun version: $(bun --version)"
 
 # Install Node.js if specified
-echo "-----> Checking Node.js dependency"
-
-NODE_VERSION=$(cat $BUILD_DIR/package.json | json_value 'node' 1 | xargs)
-
 if [ ! -z "$NODE_VERSION" ]; then
     echo "-----> Installing Node.js v$NODE_VERSION"
 
@@ -105,11 +117,6 @@ if [ ! -z "$NODE_VERSION" ]; then
 else
   echo "-----> Node.js version not specified in package.json, skipping"
 fi
-
-# Install NPM if specified
-echo "-----> Checking NPM dependency"
-
-NPM_VERSION=$(cat $BUILD_DIR/package.json | json_value 'npm' 1 | xargs)
 
 # Install NPM if specified
 if [ ! -z "$NPM_VERSION" ]; then
