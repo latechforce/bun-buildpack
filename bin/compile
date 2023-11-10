@@ -47,12 +47,12 @@ BUN_BINARY="bun-${BUN_DISTRO}"
 
 # Download and install Bun
 if [ "$BUN_VERSION" == "latest" ]; then
-  BUN_URL=$(curl -s https://api.github.com/repos/oven-sh/bun/releases/latest | grep 'browser_download_url.*bun-linux-x64.zip' | cut -d '"' -f 4)
+  BUN_URL=$(curl -s https://api.github.com/repos/oven-sh/bun/releases/latest | jq -r '.assets[] | select(.name == "bun-linux-x64.zip").browser_download_url')
 else
   BUN_URL="https://github.com/oven-sh/bun/releases/download/bun-v$BUN_VERSION/${BUN_BINARY}.zip"
 fi
 
-echo $BUN_URL
+echo "Bun URL: $BUN_URL"
 
 # Download Bun
 curl -fsSL $BUN_URL -o bun.zip
