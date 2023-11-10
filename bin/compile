@@ -64,6 +64,9 @@ echo "       Bun version: $(bun --version)"
 # Here you would use bun to build your application
 echo "-----> Building application with Bun"
 
+echo "Turbo"
+bunx turbo run build
+
 echo "Linking to Supabase Project: $SUPABASE_PROJECT_ID"
 bunx supabase link --project-ref $SUPABASE_PROJECT_ID
 bunx supabase db push
