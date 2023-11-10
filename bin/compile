@@ -95,7 +95,8 @@ if [ ! -z "$NODE_VERSION" ]; then
     curl -s $NODE_URL | tar xz -C $BUILD_DIR/.scalingo/node --strip-components=1
 
     # Add Node to the PATH
-    export PATH="$BUILD_DIR/.scalingo/node/bin:$PATH"
+    export PATH="$BUILD_DIR/$NODE_DIR_NAME/bin:$PATH"
+    echo "export PATH=\"\$HOME/$NODE_DIR_NAME/bin:\$PATH\"" > .profile.d/bun.sh
 
     echo "-----> Node.js installed"
 else
