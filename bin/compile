@@ -52,6 +52,8 @@ else
   BUN_URL="https://github.com/oven-sh/bun/releases/download/bun-v$BUN_VERSION/${BUN_BINARY}.zip"
 fi
 
+echo $BUN_URL
+
 # Download Bun
 curl -fsSL $BUN_URL -o bun.zip
 
