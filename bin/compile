@@ -83,7 +83,6 @@ echo "export PATH=\"\$HOME/node_modules/.bin:\$PATH\"" >> .profile.d/bun.sh
 chmod +x .profile.d/bun.sh
 
 echo "-----> Bun installed"
-echo "       Bun version: $(bun --version)"
 
 # Install Node.js if specified
 if [ ! -z "$NODE_VERSION" ]; then
@@ -104,7 +103,6 @@ if [ ! -z "$NODE_VERSION" ]; then
     export PATH="$BUILD_DIR/.scalingo/node/bin:$PATH"
 
     echo "-----> Node.js installed"
-    echo "       Node.js version: $(node --version)"
 else
   echo "-----> Node.js version not specified in package.json, skipping"
 fi
@@ -116,7 +114,6 @@ if [ ! -z "$NPM_VERSION" ]; then
   npm install -g npm@$NPM_VERSION
 
   echo "-----> NPM installed"
-  echo "       NPM version: $(npm --version)"
 else
   echo "-----> NPM version not specified in package.json, skipping"
 fi
