@@ -129,7 +129,13 @@ echo "-----> Building application with Bun"
 
 cd $BUILD_DIR
 bun install
-bun run build
+
+# Run the build script if specified
+if grep -q '"build":' package.json; then
+  bun run build
+else
+  echo "Build script not found in package.json, skipping"
+fi
 
 # Clean up the cache to prevent storing unnecessary files
 rm -rf $CACHE_DIR/*
