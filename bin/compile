@@ -101,7 +101,7 @@ if [ ! -z "$NODE_VERSION" ]; then
 
     # Add Node to the PATH
     export PATH="$BUILD_DIR/$NODE_DIR_NAME/bin:$PATH"
-    echo "export PATH=\"\$HOME/$NODE_DIR_NAME/bin:\$PATH\"" > .profile.d/bun.sh
+    echo "export PATH=\"\$HOME/$NODE_DIR_NAME/bin:\$PATH\"" >> .profile.d/bun.sh
 
     echo "-----> Node.js installed"
 else
