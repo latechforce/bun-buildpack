@@ -101,7 +101,12 @@ if [ ! -z "$NODE_VERSION" ]; then
 
     # Add Node to the PATH
     export PATH="$BUILD_DIR/$NODE_DIR_NAME/bin:$PATH"
-    echo "export PATH=\"\$HOME/$NODE_DIR_NAME/bin:\$PATH\"" >> .profile.d/bun.sh
+
+    # Persist the PATH change for the runtime environment
+    echo "export PATH=\"\$HOME/$NODE_DIR_NAME/bin:\$PATH\"" >> .profile.d/node.sh
+
+    # Make the profile script executable
+    chmod +x .profile.d/node.sh
 
     echo "-----> Node.js installed"
 else
