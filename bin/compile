@@ -124,6 +124,11 @@ else
   echo "-----> NPM version not specified in package.json, skipping"
 fi
 
+echo "-----> Setting default environment variables"
+export NODE_ENV=${NODE_ENV:-production}
+echo "export NODE_ENV=\${NODE_ENV:-production}" > .profile.d/bun.sh
+echo "NODE_ENV=$NODE_ENV"
+
 # Here you would use bun to build your application
 echo "-----> Building application with Bun"
 
