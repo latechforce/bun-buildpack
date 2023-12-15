@@ -8,13 +8,13 @@ echo "-----> Checking package.json for Bun, Node.js and NPM versions"
 # Function to parse JSON values
 json_value() {
   KEY=$1
-  num=$2
-  awk -F"[,:}]" '{for(i=1;i<=NF;i++){if($i~/'$KEY'\042/){print $(i+1)}}}' | tr -d '"' | sed -n ${num}p
+  grep "\"$KEY\"" "$BUILD_DIR/package.json" | awk -F '"' '{print $4}'
 }
 
-NODE_VERSION=$(cat $BUILD_DIR/package.json | json_value 'node' 1 | xargs)
-BUN_VERSION=$(cat $BUILD_DIR/package.json | json_value 'bun' 1 | xargs)
-NPM_VERSION=$(cat $BUILD_DIR/package.json | json_value 'npm' 1 | xargs)
+# Extracting the versions
+NODE_VERSION=$(json_value 'node')
+BUN_VERSION=$(json_value 'bun')
+NPM_VERSION=$(json_value 'npm')
 
 # Set a default Bun version if not specified
 if [ -z "$BUN_VERSION" ]; then
