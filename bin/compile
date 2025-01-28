@@ -3,7 +3,7 @@
 BUILD_DIR=$1
 CACHE_DIR=$2
 
-echo "-----> Checking package.json for Bun, Node.js and NPM versions"
+echo "-----> Checking package.json for Bun versions"
 
 # Function to parse JSON values
 json_value() {
